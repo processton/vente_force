@@ -171,12 +171,12 @@ Route::middleware([
         // Onboarding
         //----------------------------------
 
-        Route::middleware(['redirect-if-installed'])->prefix('installation')->group(function () {
+        // Route::middleware(['redirect-if-installed'])->prefix('installation')->group(function () {
 
-            Route::post('/login', LoginController::class);
+        //     Route::post('/login', LoginController::class);
 
-            Route::post('/finish', FinishController::class);
-        });
+        //     Route::post('/finish', FinishController::class);
+        // });
 
 
         Route::middleware(['jwt.auth', 'company'])->group(function () {
