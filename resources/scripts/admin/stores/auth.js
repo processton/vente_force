@@ -11,7 +11,6 @@ export const useAuthStore = (useWindow = false) => {
     id: 'auth',
     state: () => ({
       status: '',
-
       loginData: {
         email: '',
         password: '',
@@ -22,24 +21,20 @@ export const useAuthStore = (useWindow = false) => {
     actions: {
       login(data) {
         return new Promise((resolve, reject) => {
-          axios.get('/sanctum/csrf-cookie').then((response) => {
-            if (response) {
-              axios
-                .post('/login', data)
-                .then((response) => {
-                  resolve(response)
-
-                  setTimeout(() => {
-                    this.loginData.email = ''
-                    this.loginData.password = ''
-                  }, 1000)
-                })
-                .catch((err) => {
-                  handleError(err)
-                  reject(err)
-                })
-            }
-          })
+          axios
+            .post('/api/v1/auth/login', data)
+            .then((response) => {
+              resolve(response)
+              localStorage.setItem('authToken', response.data.token)
+              setTimeout(() => {
+                this.loginData.email = ''
+                this.loginData.password = ''
+              }, 1000)
+            })
+            .catch((err) => {
+              handleError(err)
+              reject(err)
+            })
         })
       },
 
@@ -53,6 +48,8 @@ export const useAuthStore = (useWindow = false) => {
                 type: 'success',
                 message: 'Logged out successfully.',
               })
+              localStorage.removeItem('authToken')
+              delete axios.defaults.headers.common['Authorization']
 
               window.router.push('/login')
                 // resetStore.clearPinia()

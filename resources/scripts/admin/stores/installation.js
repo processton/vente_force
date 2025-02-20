@@ -111,8 +111,9 @@ export const useInstallationStore = (useWindow = false) => {
       addInstallationFinish() {
         return new Promise((resolve, reject) => {
           axios
-            .post(`/api/v1/installation/finish`)
+            .post('/api/v1/installation/finish')
             .then((response) => {
+              companyStore.setSelectedCompany(response.data.company)
               resolve(response)
             })
             .catch((err) => {
@@ -138,20 +139,16 @@ export const useInstallationStore = (useWindow = false) => {
 
       installationLogin() {
         return new Promise((resolve, reject) => {
-          axios.get('/sanctum/csrf-cookie').then((response) => {
-            if (response) {
-              axios
-                .post('/api/v1/installation/login')
-                .then((response) => {
-                  companyStore.setSelectedCompany(response.data.company)
-                  resolve(response)
-                })
-                .catch((err) => {
-                  handleError(err)
-                  reject(err)
-                })
-            }
-          })
+          axios
+            .post('/api/v1/installation/login')
+            .then((response) => {
+              companyStore.setSelectedCompany(response.data.company)
+              resolve(response)
+            })
+            .catch((err) => {
+              handleError(err)
+              reject(err)
+            })
         })
       },
 

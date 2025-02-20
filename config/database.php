@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('VENTE_DB_CONNECTION', 'mysql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -41,12 +41,12 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-            'unix_socket' => env('DB_SOCKET', ''),
+            'host' => env('VENTE_DB_HOST', '127.0.0.1'),
+            'port' => env('VENTE_DB_PORT', '3306'),
+            'database' => env('VENTE_DB_DATABASE', 'forge'),
+            'username' => env('VENTE_DB_USERNAME', 'forge'),
+            'password' => env('VENTE_DB_PASSWORD', ''),
+            'unix_socket' => env('VENTE_DB_SOCKET', ''),
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',

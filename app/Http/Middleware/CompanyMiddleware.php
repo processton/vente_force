@@ -3,6 +3,7 @@
 namespace Crater\Http\Middleware;
 
 use Closure;
+use Crater\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 
@@ -17,13 +18,7 @@ class CompanyMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Schema::hasTable('user_company')) {
-            $user = $request->user();
-
-            if ((! $request->header('company')) || (! $user->hasCompany($request->header('company')))) {
-                $request->headers->set('company', $user->companies()->first()->id);
-            }
-        }
+        $request->headers->set('company', Company::first()->id);
 
         return $next($request);
     }

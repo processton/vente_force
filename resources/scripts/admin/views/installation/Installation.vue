@@ -31,70 +31,35 @@ import { useInstallationStore } from '@/scripts/admin/stores/installation'
 import { useRouter } from 'vue-router'
 
 export default {
-  components: {
-    step_1: Step1RequirementsCheck,
-    step_2: Step2PermissionCheck,
-    step_3: Step3DatabaseConfig,
-    step_4: Step4VerifyDomain,
-    step_5: Step5EmailConfig,
-    step_6: Step6AccountSettings,
-    step_7: Step7CompanyInfo,
-    step_8: Step8CompanyPreferences,
-  },
+
 
   setup() {
-    let stepComponent = ref('step_1')
-    let currentStepNumber = ref(1)
+
 
     const router = useRouter()
     const installationStore = useInstallationStore()
-
     checkCurrentProgress()
-
     async function checkCurrentProgress() {
-      let res = await installationStore.fetchInstallationStep()
-
-      if (res.data.profile_complete === 'COMPLETED') {
-        router.push('/admin/dashboard')
-        return
-      }
-
-      let dbstep = parseInt(res.data.profile_complete)
-
-      if (dbstep) {
-        currentStepNumber.value = dbstep + 1
-        stepComponent.value = `step_${dbstep + 1}`
-      }
-    }
-
-    async function saveStepProgress(data) {
-      let status = {
-        profile_complete: data,
-      }
-
       try {
-        await installationStore.addInstallationStep(status)
-        return true
-      } catch (e) {
-        if (e?.response?.data?.message === 'The MAC is invalid.') {
-          window.location.reload()
+        await installationStore.addInstallationFinish()
+        // await installationStore.installationLogin()
+        let driverRes = await installationStore.checkAutheticated()
+
+        if (driverRes.data) {
+          emit('next', 4)
         }
-        return false
+
+        isSaving.value = false
+      } catch (e) {
+        notificationStore.showNotification({
+          type: 'error',
+          message: t('wizard.verify_domain.failed'),
+        })
+
+        isSaving.value = false
       }
     }
 
-    async function onStepChange(data) {
-      if (data) {
-        let res = await saveStepProgress(data)
-        if (!res) return false
-      }
-
-      currentStepNumber.value++
-
-      if (currentStepNumber.value <= 8) {
-        stepComponent.value = 'step_' + currentStepNumber.value
-      }
-    }
 
     function onNavClick(e) {}
 

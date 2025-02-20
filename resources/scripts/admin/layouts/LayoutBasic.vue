@@ -2,16 +2,16 @@
   <div v-if="isAppLoaded" class="h-full">
     <NotificationRoot />
 
-    <SiteHeader />
+    <!-- <SiteHeader /> -->
 
-    <SiteSidebar />
+    <!-- <SiteSidebar /> -->
 
     <ExchangeRateBulkUpdateModal />
 
     <main
-      class="h-screen h-screen-ios overflow-y-auto md:pl-56 xl:pl-64 min-h-0"
+      class="h-screen h-screen-ios overflow-y-auto min-h-0"
     >
-      <div class="pt-16 pb-16">
+      <div class="">
         <router-view />
       </div>
     </main>
@@ -30,8 +30,8 @@ import { useModalStore } from '@/scripts/stores/modal'
 import { useExchangeRateStore } from '@/scripts/admin/stores/exchange-rate'
 import { useCompanyStore } from '@/scripts/admin/stores/company'
 
-import SiteHeader from '@/scripts/admin/layouts/partials/TheSiteHeader.vue'
-import SiteSidebar from '@/scripts/admin/layouts/partials/TheSiteSidebar.vue'
+// import SiteHeader from '@/scripts/admin/layouts/partials/TheSiteHeader.vue'
+// import SiteSidebar from '@/scripts/admin/layouts/partials/TheSiteSidebar.vue'
 import NotificationRoot from '@/scripts/components/notifications/NotificationRoot.vue'
 import ExchangeRateBulkUpdateModal from '@/scripts/admin/components/modal-components/ExchangeRateBulkUpdateModal.vue'
 

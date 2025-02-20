@@ -18,17 +18,20 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+        Setting::setSetting('profile_complete', "COMPLETED");
+        \Storage::disk('local')->put('database_created', 'database_created');
+
         $user = User::create([
-            'email' => 'admin@craterapp.com',
-            'name' => 'Jane Doe',
+            'email' => tenant('admin_email'),
+            'name' => tenant('admin_name'),
             'role' => 'super admin',
             'password' => 'crater@123',
         ]);
 
         $company = Company::create([
-            'name' => 'xyz',
+            'name' => tenant('name'),
             'owner_id' => $user->id,
-            'slug' => 'xyz'
+            'slug' => tenant('id')
         ]);
 
         $company->unique_hash = Hashids::connection(Company::class)->encode($company->id);
@@ -38,7 +41,5 @@ class UsersTableSeeder extends Seeder
         BouncerFacade::scope()->to($company->id);
 
         $user->assign('super admin');
-
-        Setting::setSetting('profile_complete', 0);
     }
 }

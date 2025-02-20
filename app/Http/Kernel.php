@@ -2,8 +2,8 @@
 
 namespace Crater\Http;
 
+use Crater\Http\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
-use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
 class Kernel extends HttpKernel
 {
@@ -41,9 +41,11 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            EnsureFrontendRequestsAreStateful::class,
-            'throttle:180,1',
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            EncryptCookies::class,
+            // \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            'throttle:100,1',
+            \Illuminate\Routing\Middleware\SubstituteBindings::class
         ],
     ];
 
@@ -72,6 +74,7 @@ class Kernel extends HttpKernel
         'pdf-auth' => \Crater\Http\Middleware\PdfMiddleware::class,
         'cron-job' => \Crater\Http\Middleware\CronJobMiddleware::class,
         'customer-portal' => \Crater\Http\Middleware\CustomerPortalMiddleware::class,
+        'jwt.auth' => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
     ];
 
     /**

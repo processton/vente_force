@@ -10,15 +10,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Schema;
-use Laravel\Sanctum\HasApiTokens;
 use Silber\Bouncer\BouncerFacade;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable implements HasMedia
+class User extends Authenticatable implements JWTSubject, HasMedia
 {
-    use HasApiTokens;
     use Notifiable;
     use InteractsWithMedia;
     use HasCustomFieldsTrait;
@@ -52,6 +52,21 @@ class User extends Authenticatable implements HasMedia
         'formattedCreatedAt',
         'avatar',
     ];
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+    public function getAuthIdentifierName()
+    {
+        return 'id'; // Ensure it returns the correct primary key column
+    }
 
     /**
      * Find the user instance for the given username.

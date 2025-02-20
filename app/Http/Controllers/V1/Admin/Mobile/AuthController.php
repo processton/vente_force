@@ -3,42 +3,44 @@
 namespace Crater\Http\Controllers\V1\Admin\Mobile;
 
 use Crater\Http\Controllers\Controller;
-use Crater\Http\Requests\LoginRequest;
-use Crater\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Crater\Models\User;
+use Illuminate\Support\Facades\RateLimiter;
 
 class AuthController extends Controller
 {
-    public function login(LoginRequest $request)
+    public function login(Request $request)
     {
-        $user = User::where('email', $request->username)->first();
+        // $tenant = Tenancy::tenant(); // Get current tenant
+        $credentials = $request->only('email', 'password');
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
+        $user = User::where('email', $credentials['email'])
+            ->first();
+
+        if (!$user || !\Hash::check($credentials['password'], $user->password)) {
+            return response()->json(['error' => 'Invalid credentials'], 401);
         }
 
+        $token = JWTAuth::fromUser($user);
+
+        RateLimiter::clear($request->ip());
+
         return response()->json([
-            'type' => 'Bearer',
-            'token' => $user->createToken($request->device_name)->plainTextToken,
+            'token' => $token,
+            'user' => $user,
+            'company' => $user->companies()->first()
         ]);
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
-        $request->user()->currentAccessToken()->delete();
-
-        return response()->json([
-            'success' => true,
-        ]);
+        JWTAuth::invalidate(JWTAuth::getToken());
+        return response()->json(['message' => 'Successfully logged out']);
     }
 
-    public function check()
+    public function me()
     {
-        return Auth::check();
+        return response()->json(JWTAuth::user());
     }
 }

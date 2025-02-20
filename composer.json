@@ -22,7 +22,7 @@
     "jasonmccreary/laravel-test-assertions": "^2.0",
     "laravel/framework": "^8.0",
     "laravel/helpers": "^1.1",
-    "laravel/sanctum": "^2.6",
+    "laravel/passport": "^10.4",
     "laravel/tinker": "^2.0",
     "laravel/ui": "^3.0",
     "lavary/laravel-menu": "^1.8",
@@ -32,6 +32,8 @@
     "spatie/flysystem-dropbox": "^1.2",
     "spatie/laravel-backup": "^6.11",
     "spatie/laravel-medialibrary": "^8.7",
+    "stancl/tenancy": "^3.6",
+    "tymon/jwt-auth": "^1.0@dev",
     "vinkla/hashids": "^9.0"
   },
   "require-dev": {

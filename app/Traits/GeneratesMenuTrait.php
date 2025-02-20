@@ -8,14 +8,16 @@ trait GeneratesMenuTrait
     {
         $menu = [];
 
-        foreach (\Menu::get($key)->items->toArray() as $data) {
+        $m = config('crater.'.$key);
+
+        foreach ($m as $data) {
             if ($user->checkAccess($data)) {
                 $menu[] = [
-                    'title' => $data->title,
-                    'link' => $data->link->path['url'],
-                    'icon' => $data->data['icon'],
-                    'name' => $data->data['name'],
-                    'group' => $data->data['group'],
+                    'title' => $data['title'],
+                    'link' => $data['link'],
+                    'icon' => $data['icon'],
+                    'name' => $data['name'],
+                    'group' => $data['group'],
                 ];
             }
         }

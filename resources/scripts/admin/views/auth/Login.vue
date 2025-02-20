@@ -63,7 +63,7 @@
 
 <script setup>
 import axios from 'axios'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useNotificationStore } from '@/scripts/stores/notification'
 import { useRouter } from 'vue-router'
 import { required, email, helpers } from '@vuelidate/validators'
@@ -94,6 +94,13 @@ const v$ = useVuelidate(
   computed(() => authStore.loginData)
 )
 
+onMounted(() => {
+  const token = localStorage.getItem('authToken')
+  if (token) {
+    router.push('/admin/dashboard')
+  }
+})
+
 const getInputType = computed(() => {
   if (isShowPassword.value) {
     return 'text'
@@ -116,12 +123,14 @@ async function onSubmit() {
     isLoading.value = true
     await authStore.login(authStore.loginData)
 
-    router.push('/admin/dashboard')
-
     notificationStore.showNotification({
       type: 'success',
       message: 'Logged in successfully.',
     })
+
+    setTimeout(() => {
+      window.location.href = '/admin/dashboard'
+    }, 1000)
   } catch (error) {
     isLoading.value = false
   }

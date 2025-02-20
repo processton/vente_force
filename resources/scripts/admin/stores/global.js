@@ -46,9 +46,16 @@ export const useGlobalStore = (useWindow = false) => {
 
     actions: {
       bootstrap() {
+        const token = localStorage.getItem('authToken')
+        const company_id = localStorage.getItem('company_id')
         return new Promise((resolve, reject) => {
           axios
-            .get('/api/v1/bootstrap')
+            .get('/api/v1/bootstrap', {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                company: company_id,
+              },
+            })
             .then((response) => {
               const companyStore = useCompanyStore()
               const userStore = useUserStore()
@@ -70,8 +77,8 @@ export const useGlobalStore = (useWindow = false) => {
               moduleStore.apiToken = response.data.global_settings.api_token
               moduleStore.enableModules = response.data.modules
 
-                // company store
-                companyStore.companies = response.data.companies
+              // company store
+              companyStore.companies = response.data.companies
               companyStore.selectedCompany = response.data.current_company
               companyStore.setSelectedCompany(response.data.current_company)
               companyStore.selectedCompanySettings =

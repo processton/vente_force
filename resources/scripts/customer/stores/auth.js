@@ -20,27 +20,23 @@ export const useAuthStore = defineStore({
     login(data) {
       const notificationStore = useNotificationStore(true)
       return new Promise((resolve, reject) => {
-        axios.get('/sanctum/csrf-cookie').then((response) => {
-          if (response) {
-            axios
-              .post(`/${data.company}/customer/login`, data)
-              .then((response) => {
-                notificationStore.showNotification({
-                  type: 'success',
-                  message: global.tm('general.login_successfully'),
-                })
-                resolve(response)
-                setTimeout(() => {
-                  this.loginData.email = ''
-                  this.loginData.password = ''
-                }, 1000)
-              })
-              .catch((err) => {
-                handleError(err)
-                reject(err)
-              })
-          }
-        })
+        axios
+          .post(`/${data.company}/customer/login`, data)
+          .then((response) => {
+            notificationStore.showNotification({
+              type: 'success',
+              message: global.tm('general.login_successfully'),
+            })
+            resolve(response)
+            setTimeout(() => {
+              this.loginData.email = ''
+              this.loginData.password = ''
+            }, 1000)
+          })
+          .catch((err) => {
+            handleError(err)
+            reject(err)
+          })
       })
     },
 

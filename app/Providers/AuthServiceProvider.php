@@ -19,6 +19,9 @@ use Crater\Policies\SettingsPolicy;
 use Crater\Policies\UserPolicy;
 use Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Laravel\Passport\Passport;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
+use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -53,6 +56,10 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+        Passport::routes(null, ['middleware' => [
+            InitializeTenancyByDomain::class, // Or other identification middleware of your choice
+            PreventAccessFromCentralDomains::class,
+        ]]);
 
         Gate::define('create company', [CompanyPolicy::class, 'create']);
         Gate::define('transfer company ownership', [CompanyPolicy::class, 'transferOwnership']);
@@ -86,5 +93,10 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('view report', [ReportPolicy::class, 'viewReport']);
 
         Gate::define('owner only', [OwnerPolicy::class, 'managedByOwner']);
+    }
+
+    public function register()
+    {
+        //
     }
 }
