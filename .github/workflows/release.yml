@@ -102,4 +102,4 @@ jobs:
         run: |
           cd cloud
           git commit --allow-empty -m "Automated empty commit from venteforce on latest release $(date)"
-          git push https://x-access-token:${{ secrets.CLOUD_REPO_TOKEN }}@github.com/processton/cloud.git prod
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/processton/cloud.git prod
