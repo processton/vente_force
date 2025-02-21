@@ -1,0 +1,44 @@
+name: Trigger Empty Commit on Cloud Latest Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  trigger_commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get Latest Release
+        id: latest_release
+        run: |
+          LATEST_TAG=$(curl -s "https://api.github.com/repos/${{ github.repository }}/releases/latest" | jq -r .tag_name)
+          echo "Latest release tag: $LATEST_TAG"
+          echo "latest_tag=$LATEST_TAG" >> $GITHUB_ENV
+
+      - name: Check If This Release Is Latest
+        run: |
+          if [[ "${{ github.event.release.tag_name }}" != "${{ env.latest_tag }}" ]]; then
+            echo "This is not the latest release. Skipping..."
+            exit 1
+          fi
+
+      - name: Checkout main repo
+        uses: actions/checkout@v4
+
+      - name: Setup Git
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+      - name: Clone the target repository
+        run: |
+          git clone https://github.com/processton/cloud.git
+          cd cloud
+          git checkout prod
+
+      - name: Make an empty commit
+        run: |
+          cd cloud
+          git commit --allow-empty -m "Automated empty commit from venteforce on latest release $(date)"
+          git push https://x-access-token:${{ secrets.CLOUD_REPO_TOKEN }}@github.com/processton/cloud.git prod
