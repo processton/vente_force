@@ -80,10 +80,6 @@ jobs:
           git tag -fa latest -m "Latest release"
           git push origin latest --force
 
-  trigger_commit:
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Checkout main repo
         uses: actions/checkout@v4
 
