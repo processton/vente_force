@@ -15,6 +15,7 @@ Homestead.yaml
 /docker-compose/db/data/
 .gitkeep
 /public/docs
+/public/build
 /.scribe
 !storage/fonts/.gitkeep
 .DS_Store
