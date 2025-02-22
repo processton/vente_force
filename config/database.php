@@ -35,7 +35,7 @@ return [
 
         'sqlite' => [
             'driver' => 'sqlite',
-            'database' => env('DB_DATABASE', database_path('database.sqlite')),
+            'database' => env('VENTE_DB_DATABASE', database_path('laravel.db')),
             'prefix' => '',
         ],
 
