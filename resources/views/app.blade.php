@@ -16,6 +16,8 @@
     <meta name="theme-color" content="#ffffff">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    @dd(Auth::user());
+
     <!-- Module Styles -->
     @foreach(\Crater\Services\Module\ModuleFacade::allStyles() as $name => $path)
         <link rel="stylesheet" href="/modules/styles/{{ $name }}">
@@ -57,12 +59,12 @@
 
         window.login_page_description = "{{$login_page_description}}"
 
-        @endif     
+        @endif
         @if(isset($copyright_text))
 
         window.copyright_text = "{{$copyright_text}}"
 
-        @endif    
+        @endif
 
         window.Crater.start()
     </script>

@@ -4,12 +4,12 @@
 
     <!-- <SiteHeader /> -->
 
-    <!-- <SiteSidebar /> -->
+    <SiteSidebar />
 
     <ExchangeRateBulkUpdateModal />
 
     <main
-      class="h-screen h-screen-ios overflow-y-auto min-h-0"
+      class="h-screen h-screen-ios overflow-y-auto min-h-0 md:pl-56 xl:pl-64"
     >
       <div class="">
         <router-view />
@@ -31,7 +31,7 @@ import { useExchangeRateStore } from '@/scripts/admin/stores/exchange-rate'
 import { useCompanyStore } from '@/scripts/admin/stores/company'
 
 // import SiteHeader from '@/scripts/admin/layouts/partials/TheSiteHeader.vue'
-// import SiteSidebar from '@/scripts/admin/layouts/partials/TheSiteSidebar.vue'
+import SiteSidebar from '@/scripts/admin/layouts/partials/TheSiteSidebar.vue'
 import NotificationRoot from '@/scripts/components/notifications/NotificationRoot.vue'
 import ExchangeRateBulkUpdateModal from '@/scripts/admin/components/modal-components/ExchangeRateBulkUpdateModal.vue'
 

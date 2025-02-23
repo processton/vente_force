@@ -1,6 +1,7 @@
 <?php
 
 use Crater\Http\Controllers\V1\Admin\Auth\LoginController;
+use Crater\Http\Controllers\V1\Admin\Auth\OAuthLoginController;
 use Crater\Http\Controllers\V1\Admin\Expense\ShowReceiptController;
 use Crater\Http\Controllers\V1\Admin\Report\CustomerSalesReportController;
 use Crater\Http\Controllers\V1\Admin\Report\ExpensesReportController;
@@ -41,7 +42,14 @@ Route::middleware([
     // Admin Auth
     // ----------------------------------------------
 
-    Route::post('login', [LoginController::class, 'login']);
+    Route::get('/login/processton', [OAuthLoginController::class, 'redirectToProcesston'])->name('login.processton');
+    Route::get('/login/processton/callback', [OAuthLoginController::class, 'handleProcesstonCallback']);
+
+    Route::get('login', [OAuthLoginController::class, 'index']);
+
+    Route::get('oauth/callback', [OAuthLoginController::class, 'callback']);
+
+    Route::get('collect-profile', [OAuthLoginController::class, 'collectProfile']);
 
     Route::post('auth/logout', function () {
         Auth::guard('web')->logout();
@@ -152,21 +160,21 @@ Route::middleware([
         ]);
     })->where('vue', '[\/\w\.-]*')->name('customer.dashboard')->middleware(['install']);
 
-    Route::get('/', function () {
-        return view('app');
-    })->where('vue', '[\/\w\.-]*')->name('home')->middleware(['install', 'guest']);
+    // Route::get('/', function () {
+    //     return view('app');
+    // })->where('vue', '[\/\w\.-]*')->name('home')->middleware(['install', 'guest']);
 
-    Route::get('/reset-password/{token}', function () {
-        return view('app');
-    })->where('vue', '[\/\w\.-]*')->name('reset-password')->middleware(['install', 'guest']);
+    // Route::get('/reset-password/{token}', function () {
+    //     return view('app');
+    // })->where('vue', '[\/\w\.-]*')->name('reset-password')->middleware(['install', 'guest']);
 
-    Route::get('/forgot-password', function () {
-        return view('app');
-    })->where('vue', '[\/\w\.-]*')->name('forgot-password')->middleware(['install', 'guest']);
+    // Route::get('/forgot-password', function () {
+    //     return view('app');
+    // })->where('vue', '[\/\w\.-]*')->name('forgot-password')->middleware(['install', 'guest']);
 
-    Route::get('/login', function () {
-        return view('app');
-    })->where('vue', '[\/\w\.-]*')->name('login')->middleware(['install', 'guest']);
+    // Route::get('/login', function () {
+    //     return view('app');
+    // })->where('vue', '[\/\w\.-]*')->name('login')->middleware(['install', 'guest']);
 
 
 });

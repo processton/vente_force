@@ -27,6 +27,9 @@ Route::middleware([
         Route::domain($domain)->group(function () {
 
             Route::prefix('tenant')->group(function () {
+                Route::get('/', function () {
+                    return 'Tenant';
+                });
                 Route::post('/register', [SetupController::class, 'store']);
             });
         });

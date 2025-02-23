@@ -122,13 +122,12 @@
       border-r border-gray-200 border-solid
       xl:w-64
       md:fixed md:flex md:flex-col md:inset-y-0
-      pt-16
     "
   >
     <div
       v-for="menu in globalStore.menuGroups"
       :key="menu"
-      class="p-0 m-0 mt-6 list-none"
+      class="p-0 m-0 list-none"
     >
       <router-link
         v-for="item in menu"

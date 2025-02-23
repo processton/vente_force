@@ -124,6 +124,10 @@ class TenancyServiceProvider extends ServiceProvider
             'logo' => 'config.logo',
             'passport_public_key' => 'passport.public_key',
             'passport_private_key' => 'passport.private_key',
+            'identity_force_app_key' => 'jwt.secret',
+            'identity_force_app_key' => 'services.processton.client_id',
+            'identity_force_app_secret' => 'services.processton.client_secret',
+            'identity_force_app_url' => 'services.processton.redirect',
 
         ];
     }

@@ -26,7 +26,10 @@ class SetupController extends Controller
             'tenancy_db_password' => 'required|string',
             'MAX_CUSTOMERS' => 'required',
             'currency' => 'nullable',
-            'country' => 'nullable'
+            'country' => 'nullable',
+            'identity_force_app_secret' => 'required|string',
+            'identity_force_app_key' => 'required|string',
+            'identity_force_app_url' => 'required|string'
         ]);
 
         try {
@@ -57,7 +60,10 @@ class SetupController extends Controller
                 'tenancy_db_password' => $data['tenancy_db_password'],
                 'max_customers' => $data['MAX_CUSTOMERS'],
                 'currency' => $data['currency'],
-                'country' => $data['country']
+                'country' => $data['country'],
+                'identity_force_app_secret' => $data['identity_force_app_secret'],
+                'identity_force_app_key' => $data['identity_force_app_key'],
+                'identity_force_app_url' => $data['identity_force_app_url']
             ]);
 
             $tenant->domains()->create([

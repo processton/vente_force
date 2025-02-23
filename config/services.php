@@ -44,6 +44,12 @@ return [
         ],
     ],
 
+    'processton' => [
+        'client_id' => env('PROCESSTON_CLIENT_ID'),
+        'client_secret' => env('PROCESSTON_CLIENT_SECRET'),
+        'redirect' => env('PROCESSTON_REDIRECT_URL'),
+    ],
+
     'facebook' => [
         'client_id' => env('FACEBOOK_CLIENT_ID'),
         'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
